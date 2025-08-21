@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>VisorIA — Estoque & Validades</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <meta name="theme-color" content="#5b8cff" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>VisorIA</h1>
+      <div class="status-line">
+        <span id="installTip" class="chip hidden">Instalar app</span>
+        <span id="offlineTip" class="chip warn hidden">Offline</span>
+        <button id="notifBtn" class="btn ghost">Ativar notificações</button>
+      </div>
+    </header>
+    <main class="container">
+      <section class="card">
+        <h2>Novo item</h2>
+        <form id="itemForm">
+          <div class="grid">
+            <label
+              ><span>Nome</span
+              ><input
+                id="name"
+                required
+                placeholder="Ex.: Leite integral"
+            /></label>
+            <label
+              ><span>Quantidade</span
+              ><input
+                id="quantity"
+                type="number"
+                min="1"
+                value="1"
+                required
+            /></label>
+            <label
+              ><span>Validade</span
+              ><input
+                id="expiry"
+                placeholder="DD/MM/AAAA ou 'em 10 dias'"
+            /></label>
+            <label
+              ><span>Categoria</span
+              ><input id="category" placeholder="Ex.: Laticínios" /></label
+            >
+            <label
+              ><span>Local</span
+              ><input id="location" placeholder="Ex.: Geladeira" /></label
+            >
+            <label class="col-span-2"
+              ><span>Notas</span
+              ><input id="notes" placeholder="Observações" /></label
+            >
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn primary">Adicionar</button>
+            <button type="button" id="voiceBtn" class="btn">
+              Cadastro por voz 🎙️
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="row">
+          <h2>Estoque</h2>
+          <div class="filters">
+            <input id="search" placeholder="Buscar por nome" />
+            <select id="statusFilter">
+              <option value="">Todos</option>
+              <option value="verde">Verde (&gt;30d)</option>
+              <option value="amarelo">Amarelo (11-30d)</option>
+              <option value="vermelho">Vermelho (0-10d)</option>
+              <option value="vencido">Vencido (&lt;0)</option>
+            </select>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="dot verde"></span> Verde
+          <span class="dot amarelo"></span> Amarelo
+          <span class="dot vermelho"></span> Vermelho
+          <span class="dot vencido"></span> Vencido
+        </div>
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qtd</th>
+              <th>Validade</th>
+              <th>Faltam</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <dialog id="editDialog">
+      <form method="dialog" id="editForm" class="dialog-form">
+        <h3>Editar item</h3>
+        <input type="hidden" id="editId" />
+        <label>Nome <input id="editName" required /></label>
+        <label
+          >Quantidade <input id="editQuantity" type="number" min="1" required
+        /></label>
+        <label
+          >Validade
+          <input
+            id="editExpiry"
+            placeholder="DD/MM/AAAA ou 'em 10 dias'"
+        /></label>
+        <label>Categoria <input id="editCategory" /></label>
+        <label>Local <input id="editLocation" /></label>
+        <label>Notas <input id="editNotes" /></label>
+        <div class="actions">
+          <button value="cancel">Cancelar</button>
+          <button id="saveEdit" class="btn primary" value="default">
+            Salvar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/static/app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
+  </body>
+</html>
